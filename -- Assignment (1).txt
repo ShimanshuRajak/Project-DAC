@@ -1,0 +1,95 @@
+-- Assignment
+ -- 1.Write a query to display the last name, department number, and department name for all employees working in department 8. 
+select e.last_name, e.department_id, d.department_name
+from Employees e, Departments d  
+where e.department_id = 8
+and e.department_id = d.department_id;
+
+-- 2. Create a unique listing of all jobs that are in department 80. Include the location of the department in the output. 
+select distinct e.job_id, l.location_id, l.city
+from employees e ,Departments d ,Locations l
+ where e.department_id = d.department_id
+ and d.location_id = l.location_id
+ and d.department_id = 8;
+
+-- 3. Write a query to display the employee last name, department name, location ID, and city of all employees who earns more than 10000. 
+select e.last_name, d.department_name, l.location_id, l.city
+from employees e , departments d , locations l
+where e.department_id = d.department_id
+and d.location_id = l.location_id
+and e.salary > 10000;
+
+-- 4. Write a query to display the employee last name,designation of all employees who earns more than equal to 10000 and less than equal to 20000. 
+select e.last_name, j.job_title
+from employees e , Jobs j
+where  e.job_id = J.job_id
+and salary between 10000 and 20000;
+
+-- 5. Write a query to display the employee last name, designation  ,city of all employees who earns more than equal to 10000 and less than equal to 20000. 
+select e.last_name, j.job_title ,l.city
+from employees e , jobs j , locations l , departments d
+where e.job_id=J.job_id
+and e.department_id=d.department_id
+and d.location_id=l.location_id
+and salary between 10000 and 20000;
+
+
+-- 6. Write a query to display the employee last name, designation of all employees who earns more than equal to 10000 and less than equal to 20000 and works in either 5/10/9. 
+select e.last_name, j.job_title
+from employees e, jobs j
+where e.job_id=j.job_id
+and salary between 10000 and 20000
+and department_id in (5, 10, 9);
+
+-- 7.  Write a query to display the employee last name, designation  and city of all employees who works in  finance dept. 
+select e.last_name, j.job_title, l.city,d.department_name
+from employees e, departments d,locations l , jobs j
+where department_name = 'Finance'
+and d.location_id=l.location_id
+and e.department_id=d.department_id
+and e.job_id=j.job_id;
+
+-- 8. Display the designation ,salary of all employees who works as either accountant or programmer. 
+select j.job_title, e.salary
+from employees e , jobs j
+where e.job_id = j.job_id
+and job_title IN ('Accountant', 'Programmer');
+
+
+
+-- 9. Display the name ,dept name of the employee who does not report to anyone. 
+select concat(e.first_name,' ', e.last_name), d.department_name
+from employees e ,departments d
+where  e.department_id = d.department_id
+and e.manager_id IS NULL;
+
+
+-- 10. Display the name and city of all employees whose name starts with S and joined after 1998. 
+select e.last_name, l.city
+from employees e , departments d, locations l
+where e.department_id=d.department_id
+and d.location_id=l.location_id
+and last_name LIKE 'J%'
+and  hire_date > '1998-02-01';
+
+-- 11. find the grade of each employee
+select distinct e.first_name,e.salary,j.grade
+from employees e  left outer join job_grade j
+on e.salary between j.lowest_sal and j.highest_sal;
+
+-- 12.find the manager name of all employees including emplyees who don t have a manager.
+select e1.employee_id,e1.first_name as employee_name,e2.last_name as manager_name
+from employees e1 left join employees e2 
+on e1.manager_id = e2.employee_id;
+
+-- 13. display the detail of employees who do not have department name. 
+select e.last_name,d.department_name
+from employees e left outer join departments d
+on e.department_id = d.department_id
+where d.department_name is null;
+
+-- 14.display the employee name, doj of all employees who are after david.
+select e1.first_name as employee_name, e1.hire_date as date_of_joining
+from employees e1 left outer join employees e2 
+on  e1.hire_date > e2.hire_date
+where  e2.first_name = 'David';
